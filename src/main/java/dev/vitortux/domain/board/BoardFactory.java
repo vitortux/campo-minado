@@ -1,4 +1,4 @@
-package dev.vitortux.domain.game;
+package dev.vitortux.domain.board;
 
 public enum BoardFactory {
     EASY(8, 10, 10),
@@ -7,15 +7,15 @@ public enum BoardFactory {
 
     private int width;
     private int height;
-    private int bombs;
+    private int mines;
 
-    BoardFactory(int width, int height, int bombs) {
+    BoardFactory(int width, int height, int mines) {
         this.width = width;
         this.height = height;
-        this.bombs = bombs;
+        this.mines = mines;
     }
 
     public Board create() {
-        return new Board(width, height, bombs);
+        return new Board(width, height, mines);
     }
 }

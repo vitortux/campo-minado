@@ -1,12 +1,14 @@
-package dev.vitortux.domain.game;
+package dev.vitortux.domain.board;
+
+import dev.vitortux.domain.game.GameException;
 
 public class Board {
     private Node[][] nodes;
-    private int bombs;
+    private int mines;
 
-    public Board(int width, int height, int bombs) {
+    public Board(int width, int height, int mines) {
         this.nodes = new Node[width][height];
-        this.bombs = bombs;
+        this.mines = mines;
         this.init();
     }
 
@@ -18,7 +20,7 @@ public class Board {
         }
     }
 
-    public void reveal(int x, int y) throws NullPointerException {
+    public void reveal(int x, int y) throws GameException {
         this.nodes[x][y].reveal();
     }
 }
