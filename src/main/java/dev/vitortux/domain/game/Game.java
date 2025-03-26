@@ -25,7 +25,7 @@ public class Game {
         try {
             this.board.reveal(x, y);
         } catch (GameException e) {
-            System.out.println(e.getMessage());
+            // Chamaria o método de game over.
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());
         }
