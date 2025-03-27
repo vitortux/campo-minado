@@ -1,12 +1,17 @@
 package dev.vitortux.domain.game;
 
+import java.util.Scanner;
+
 import dev.vitortux.domain.board.Board;
+import dev.vitortux.domain.board.BoardFactory;
 
 public class Game {
+    private static final Scanner SCANNER = new Scanner(System.in);
     private static Game instance;
     private Board board;
 
     private Game() {
+        this.board = BoardFactory.EASY.create();
     }
 
     public static Game getInstance() {
@@ -16,18 +21,31 @@ public class Game {
         return instance;
     }
 
-    /**
-     * O ideal aqui é mover este try-catch para o método que loopa o jogo. Quando o
-     * jogador selecionar uma bomba, o método de game over pode ser chamado, por
-     * exemplo.
-     */
-    public void reveal(int x, int y) {
-        try {
-            this.board.reveal(x, y);
-        } catch (GameException e) {
-            // Chamaria o método de game over.
-        } catch (NullPointerException e) {
-            System.out.println(e.getMessage());
+    public void start() {
+        boolean loop = true;
+
+        while (loop) {
+            try {
+                this.board.print();
+
+                System.out.print("Digite a linha: ");
+                int x = SCANNER.nextInt();
+
+                System.out.print("Digite a coluna: ");
+                int y = SCANNER.nextInt();
+
+                this.reveal(x, y);
+            } catch (GameException e) {
+                System.out.println("Erro: " + e.getMessage());
+                loop = false;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                SCANNER.nextLine();
+            }
         }
+    }
+
+    private void reveal(int x, int y) throws GameException {
+        this.board.reveal(x, y);
     }
 }
