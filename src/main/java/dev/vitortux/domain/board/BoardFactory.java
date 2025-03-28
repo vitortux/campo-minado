@@ -15,7 +15,7 @@ public enum BoardFactory {
         this.mines = mines;
     }
 
-    public Board create() {
+    public Board get() {
         return new Board(width, height, mines);
     }
 }

@@ -24,7 +24,7 @@ public class Board {
         }
     }
 
-    private void mines(int x, int y) {
+    public void placeMines(int x, int y) {
         List<int[]> positions = new ArrayList<>();
 
         for (int i = 0; i < nodes.length * nodes[0].length; i++) {
@@ -42,7 +42,7 @@ public class Board {
 
         for (int i = 0; i < mines; i++) {
             int[] pos = positions.get(i);
-            nodes[pos[0]][pos[1]] = new Node(NodeType.BOMB);
+            nodes[pos[0]][pos[1]].setType(NodeType.BOMB);
         }
     }
 
@@ -58,7 +58,24 @@ public class Board {
         }
     }
 
+    // public void reveal(int x, int y) throws GameException {
+    // this.nodes[x][y].reveal();
+    // }
+
     public void reveal(int x, int y) throws GameException {
-        this.nodes[x][y].reveal();
+        nodes[x][y].reveal();
+
+        if (nodes[x][y].getMinesAround() == 0) {
+            int[][] offsets = {
+                    { -1, -1 }, { -1, 0 }, { -1, 1 }, { 0, -1 }, { 0, 1 }, { 1, -1 }, { 1, 0 }, { 1, 1 }
+            };
+
+            for (int[] offset : offsets) {
+                int nextY = y + offset[0];
+                int nextX = x + offset[1];
+
+                reveal(nextY, nextX);
+            }
+        }
     }
 }

@@ -6,7 +6,7 @@ public enum NodeType {
     EMPTY {
         @Override
         void reveal(Node node) throws GameException {
-            node.print();
+            // TODO: deve setar o número de bombas ao redor.
         }
     },
     BOMB {
