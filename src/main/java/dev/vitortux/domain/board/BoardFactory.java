@@ -1,9 +1,9 @@
 package dev.vitortux.domain.board;
 
 public enum BoardFactory {
-    EASY(8, 10, 10),
-    MEDIUM(14, 18, 40),
-    HARD(20, 24, 99);
+    EASY(10, 8, 10),
+    MEDIUM(18, 14, 40),
+    HARD(24, 20, 99);
 
     private int width;
     private int height;

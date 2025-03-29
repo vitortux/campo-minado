@@ -11,8 +11,6 @@ public class Game {
     private Board board;
 
     private Game() {
-        this.board = BoardFactory.EASY.get();
-        this.handleFirstPlay();
     }
 
     public static Game getInstance() {
@@ -27,7 +25,7 @@ public class Game {
 
         while (loop) {
             try {
-                this.print();
+                this.board.print();
 
                 System.out.print("Digite a linha: ");
                 int x = SCANNER.nextInt();
@@ -35,7 +33,7 @@ public class Game {
                 System.out.print("Digite a coluna: ");
                 int y = SCANNER.nextInt();
 
-                this.reveal(x, y);
+                this.board.reveal(x, y);
             } catch (GameException e) {
                 System.out.println("Erro: " + e.getMessage());
                 loop = false;
@@ -46,8 +44,10 @@ public class Game {
         }
     }
 
-    private void handleFirstPlay() {
-        this.print();
+    public void handleFirstPlay() {
+        this.board = BoardFactory.EASY.get();
+
+        this.board.print();
 
         System.out.print("Digite a linha: ");
         int x = SCANNER.nextInt();
@@ -55,18 +55,8 @@ public class Game {
         System.out.print("Digite a coluna: ");
         int y = SCANNER.nextInt();
 
-        this.placeMines(x, y);
-    }
-
-    private void reveal(int x, int y) throws GameException {
-        this.board.reveal(x, y);
-    }
-
-    private void print() {
-        this.board.print();
-    }
-
-    private void placeMines(int x, int y) {
         this.board.placeMines(x, y);
+        this.board.setupNodes();
+        this.board.reveal(x, y);
     }
 }

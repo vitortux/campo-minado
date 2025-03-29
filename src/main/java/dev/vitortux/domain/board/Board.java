@@ -1,17 +1,15 @@
 package dev.vitortux.domain.board;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import dev.vitortux.domain.game.GameException;
+import java.util.Random;
 
 public class Board {
     private Node[][] nodes;
+    private Random random;
     private int mines;
 
     public Board(int width, int height, int mines) {
         this.nodes = new Node[width][height];
+        this.random = new Random();
         this.mines = mines;
         this.init();
     }
@@ -25,24 +23,69 @@ public class Board {
     }
 
     public void placeMines(int x, int y) {
-        List<int[]> positions = new ArrayList<>();
+        int placed = 0;
 
+        while (placed < mines) {
+            int row = random.nextInt(nodes.length);
+            int col = random.nextInt(nodes[0].length);
+
+            if (!(Math.abs(y - row) <= 1 && Math.abs(x - col) <= 1) && (nodes[x][y].getType() != NodeType.BOMB)) {
+                nodes[row][col].setType(NodeType.BOMB);
+                placed++;
+            }
+        }
+    }
+
+    public void setupNodes() {
         for (int i = 0; i < nodes.length * nodes[0].length; i++) {
             int row = i / nodes[0].length;
             int col = i % nodes[0].length;
+            nodes[row][col].setMinesAround(countMinesAroundNode(row, col));
+        }
+    }
 
-            if (row == y && col == x) {
+    private int countMinesAroundNode(int row, int col) {
+        int count = 0;
+
+        for (int i = 0; i < 9; i++) {
+            int xOffset = i / 3 - 1;
+            int yOffset = i % 3 - 1;
+
+            if (xOffset == 0 && yOffset == 0) {
                 continue;
             }
 
-            positions.add(new int[] { row, col });
+            int nextX = row + xOffset;
+            int nextY = col + yOffset;
+
+            if (isValidPosition(nextX, nextY) && nodes[nextX][nextY].getType() == NodeType.BOMB) {
+                count++;
+            }
         }
 
-        Collections.shuffle(positions);
+        return count;
+    }
 
-        for (int i = 0; i < mines; i++) {
-            int[] pos = positions.get(i);
-            nodes[pos[0]][pos[1]].setType(NodeType.BOMB);
+    public void reveal(int x, int y) {
+        if (nodes[x][y].isRevealed() || nodes[x][y].getMinesAround() > 0) {
+            return;
+        }
+
+        nodes[x][y].reveal();
+
+        for (int i = 0; i < 9; i++) {
+            int xOffset = i / 3 - 1;
+            int yOffset = i % 3 - 1;
+
+            if (xOffset == 0 && yOffset == 0)
+                continue;
+
+            int nextX = x + xOffset;
+            int nextY = y + yOffset;
+
+            if (isValidPosition(nextX, nextY)) {
+                reveal(nextX, nextY);
+            }
         }
     }
 
@@ -58,24 +101,7 @@ public class Board {
         }
     }
 
-    // public void reveal(int x, int y) throws GameException {
-    // this.nodes[x][y].reveal();
-    // }
-
-    public void reveal(int x, int y) throws GameException {
-        nodes[x][y].reveal();
-
-        if (nodes[x][y].getMinesAround() == 0) {
-            int[][] offsets = {
-                    { -1, -1 }, { -1, 0 }, { -1, 1 }, { 0, -1 }, { 0, 1 }, { 1, -1 }, { 1, 0 }, { 1, 1 }
-            };
-
-            for (int[] offset : offsets) {
-                int nextY = y + offset[0];
-                int nextX = x + offset[1];
-
-                reveal(nextY, nextX);
-            }
-        }
+    private boolean isValidPosition(int x, int y) {
+        return x >= 0 && x < nodes.length && y >= 0 && y < nodes[0].length;
     }
 }
