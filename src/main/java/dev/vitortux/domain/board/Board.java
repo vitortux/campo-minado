@@ -95,9 +95,23 @@ public class Board {
     }
 
     public void print() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+
+        System.out.print("    ");
+        for (int col = 0; col < nodes[0].length; col++) {
+            System.out.print((col + 1) + "  ");
+        }
+        System.out.println();
+
         for (int i = 0; i < nodes.length * nodes[0].length; i++) {
             int row = i / nodes[0].length;
             int col = i % nodes[0].length;
+
+            if (col == 0) {
+                System.out.printf("%2c ", (char) ('A' + row));
+            }
+
             nodes[row][col].print();
 
             if (col == nodes[0].length - 1) {
