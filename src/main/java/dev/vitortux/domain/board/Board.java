@@ -67,18 +67,23 @@ public class Board {
     }
 
     public void reveal(int x, int y) {
-        if (nodes[x][y].isRevealed() || nodes[x][y].getMinesAround() > 0) {
+        if (nodes[x][y].isRevealed()) {
             return;
         }
 
         nodes[x][y].reveal();
 
-        for (int i = 0; i < 9; i++) {
-            int xOffset = i / 3 - 1;
-            int yOffset = i % 3 - 1;
+        if (nodes[x][y].getMinesAround() > 0) {
+            return;
+        }
 
-            if (xOffset == 0 && yOffset == 0)
+        for (int i = 0; i < 8; i++) {
+            int xOffset = (i / 3) - 1;
+            int yOffset = (i % 3) - 1;
+
+            if (xOffset == 0 && yOffset == 0) {
                 continue;
+            }
 
             int nextX = x + xOffset;
             int nextY = y + yOffset;
