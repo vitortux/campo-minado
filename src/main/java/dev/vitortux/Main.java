@@ -5,7 +5,7 @@ import dev.vitortux.domain.board.BoardFactory;
 
 public class Main {
     public static void main(String[] args) {
-        Board board = BoardFactory.EASY.get();
+        Board board = BoardFactory.MEDIUM.get();
         board.placeMines(5, 5);
         board.setupNodes();
         board.print();

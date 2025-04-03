@@ -1,6 +1,6 @@
 package dev.vitortux.domain.node;
 
-public class Node implements NodeStrategy {
+public class Node {
     private NodeState state;
     private int minesAround;
 
@@ -8,7 +8,6 @@ public class Node implements NodeStrategy {
         this.state = new Closed();
     }
 
-    @Override
     public void reveal() {
         this.state.reveal(this);
     }
@@ -21,6 +20,14 @@ public class Node implements NodeStrategy {
         this.state.unflag(this);
     }
 
+    public void print() {
+        this.state.print(minesAround);
+    }
+
+    public NodeState getState() {
+        return state;
+    }
+
     public void setState(NodeState state) {
         this.state = state;
     }
@@ -31,14 +38,5 @@ public class Node implements NodeStrategy {
 
     public void setMinesAround(int minesAround) {
         this.minesAround = minesAround;
-    }
-
-    public void print(NodeStrategy node) {
-        this.state.print(this);
-    }
-
-    @Override
-    public NodeState getState() {
-        return state;
     }
 }

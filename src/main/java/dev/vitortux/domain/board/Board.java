@@ -4,16 +4,15 @@ import java.util.Random;
 
 import dev.vitortux.domain.node.Bomb;
 import dev.vitortux.domain.node.Node;
-import dev.vitortux.domain.node.NodeStrategy;
 import dev.vitortux.domain.node.Revealed;
 
 public class Board {
-    private NodeStrategy[][] nodes;
+    private Node[][] nodes;
     private Random random;
     private int mines;
 
     public Board(int width, int height, int mines) {
-        this.nodes = new NodeStrategy[width][height];
+        this.nodes = new Node[width][height];
         this.random = new Random();
         this.mines = mines;
         this.init();
@@ -103,23 +102,23 @@ public class Board {
         System.out.print("\033[H\033[2J");
         System.out.flush();
 
-        System.out.print("    ");
-        for (int col = 0; col < nodes[0].length; col++) {
-            System.out.print((col + 1) + "  ");
+        System.out.print("   ");
+        for (int col = 0; col < nodes.length; col++) {
+            System.out.printf("%2c ", (char) ('A' + col));
         }
         System.out.println();
 
         for (int i = 0; i < nodes.length * nodes[0].length; i++) {
-            int row = i / nodes[0].length;
-            int col = i % nodes[0].length;
+            int col = i / nodes.length;
+            int row = i % nodes.length;
 
-            if (col == 0) {
-                System.out.printf("%2c ", (char) ('A' + row));
+            if (row == 0) {
+                System.out.printf("%2d ", col + 1);
             }
 
-            nodes[row][col].print(nodes[row][col]);
+            nodes[row][col].print();
 
-            if (col == nodes[0].length - 1) {
+            if (row == nodes.length - 1) {
                 System.out.println();
             }
         }

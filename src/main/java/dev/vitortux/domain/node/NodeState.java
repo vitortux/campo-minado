@@ -1,11 +1,11 @@
 package dev.vitortux.domain.node;
 
 public interface NodeState {
-    void reveal(NodeStrategy node);
+    void reveal(Node node);
 
-    void flag(NodeStrategy node);
+    void flag(Node node);
 
-    void unflag(NodeStrategy node);
+    void unflag(Node node);
 
-    void print(NodeStrategy node);
+    void print(int minesAround);
 }

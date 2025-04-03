@@ -3,22 +3,22 @@ package dev.vitortux.domain.node;
 public class Revealed implements NodeState {
 
     @Override
-    public void reveal(NodeStrategy node) {
+    public void reveal(Node node) {
         node.setState(this);
     }
 
     @Override
-    public void flag(NodeStrategy node) {
+    public void flag(Node node) {
         node.setState(this);
     }
 
     @Override
-    public void unflag(NodeStrategy node) {
+    public void unflag(Node node) {
         node.setState(this);
     }
 
     @Override
-    public void print(NodeStrategy node) {
-        System.out.print(" " + node.getMinesAround() + " ");
+    public void print(int minesAround) {
+        System.out.print(" " + minesAround + " ");
     }
 }
