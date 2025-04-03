@@ -1,4 +1,4 @@
-package dev.vitortux.domain.game;
+package dev.vitortux.domain.input;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;

@@ -1,6 +1,7 @@
 package dev.vitortux.domain.game;
 
 import dev.vitortux.domain.board.Board;
+import dev.vitortux.domain.input.Input;
 
 public class Game {
     private static Game instance;
