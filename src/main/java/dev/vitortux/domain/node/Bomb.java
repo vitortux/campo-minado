@@ -4,7 +4,7 @@ import dev.vitortux.domain.game.GameException;
 
 public class Bomb implements NodeStrategy {
     private NodeState state;
-    int minesAround;
+    private int minesAround;
 
     public Bomb() {
         this.state = new Closed();
@@ -39,5 +39,10 @@ public class Bomb implements NodeStrategy {
     public void print(NodeStrategy node) {
         // this.state.print(this);
         System.out.print("💣 ");
+    }
+
+    @Override
+    public NodeState getState() {
+        return state;
     }
 }

@@ -36,4 +36,9 @@ public class Node implements NodeStrategy {
     public void print(NodeStrategy node) {
         this.state.print(this);
     }
+
+    @Override
+    public NodeState getState() {
+        return state;
+    }
 }

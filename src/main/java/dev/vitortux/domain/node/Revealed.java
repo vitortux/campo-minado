@@ -19,6 +19,6 @@ public class Revealed implements NodeState {
 
     @Override
     public void print(NodeStrategy node) {
-        System.out.print(node.getMinesAround() + " ");
+        System.out.print(" " + node.getMinesAround() + " ");
     }
 }

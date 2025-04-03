@@ -5,6 +5,7 @@ import java.util.Random;
 import dev.vitortux.domain.node.Bomb;
 import dev.vitortux.domain.node.Node;
 import dev.vitortux.domain.node.NodeStrategy;
+import dev.vitortux.domain.node.Revealed;
 
 public class Board {
     private NodeStrategy[][] nodes;
@@ -71,9 +72,9 @@ public class Board {
     }
 
     public void reveal(int x, int y) {
-        // if (nodes[x][y].isRevealed()) {
-        // return;
-        // }
+        if (nodes[x][y].getState() instanceof Revealed) {
+            return;
+        }
 
         nodes[x][y].reveal();
 

@@ -12,4 +12,6 @@ public interface NodeStrategy {
     void setMinesAround(int minesAround);
 
     void print(NodeStrategy node);
+
+    NodeState getState();
 }

@@ -9,5 +9,7 @@ public class Main {
         board.placeMines(5, 5);
         board.setupNodes();
         board.print();
+        board.reveal(5, 5);
+        board.print();
     }
 }
