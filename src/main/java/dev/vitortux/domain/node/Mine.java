@@ -2,8 +2,8 @@ package dev.vitortux.domain.node;
 
 import dev.vitortux.domain.game.GameException;
 
-public class Bomb extends Node {
-    public Bomb() {
+public class Mine extends Node {
+    public Mine() {
         super();
     }
 

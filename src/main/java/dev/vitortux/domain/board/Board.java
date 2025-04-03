@@ -2,9 +2,9 @@ package dev.vitortux.domain.board;
 
 import java.util.Random;
 
-import dev.vitortux.domain.node.Bomb;
+import dev.vitortux.domain.node.Mine;
 import dev.vitortux.domain.node.Node;
-import dev.vitortux.domain.node.Revealed;
+import dev.vitortux.domain.node.state.Revealed;
 
 public class Board {
     private Node[][] nodes;
@@ -33,8 +33,8 @@ public class Board {
             int row = random.nextInt(nodes.length);
             int col = random.nextInt(nodes[0].length);
 
-            if (!(Math.abs(y - row) <= 1 && Math.abs(x - col) <= 1) && !(nodes[x][y] instanceof Bomb)) {
-                nodes[row][col] = new Bomb();
+            if (!(Math.abs(y - row) <= 1 && Math.abs(x - col) <= 1) && !(nodes[x][y] instanceof Mine)) {
+                nodes[row][col] = new Mine();
                 placed++;
             }
         }
@@ -62,7 +62,7 @@ public class Board {
             int nextX = row + xOffset;
             int nextY = col + yOffset;
 
-            if (isValidPosition(nextX, nextY) && nodes[nextX][nextY] instanceof Bomb) {
+            if (isValidPosition(nextX, nextY) && nodes[nextX][nextY] instanceof Mine) {
                 count++;
             }
         }

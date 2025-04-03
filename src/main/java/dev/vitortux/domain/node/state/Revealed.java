@@ -1,6 +1,8 @@
-package dev.vitortux.domain.node;
+package dev.vitortux.domain.node.state;
 
-public class Flagged implements NodeState {
+import dev.vitortux.domain.node.Node;
+
+public class Revealed implements NodeState {
 
     @Override
     public void reveal(Node node) {
@@ -14,11 +16,11 @@ public class Flagged implements NodeState {
 
     @Override
     public void unflag(Node node) {
-        node.setState(new Closed());
+        node.setState(this);
     }
 
     @Override
     public void print(int minesAround) {
-        System.out.print("🚩 ");
+        System.out.print(" " + minesAround + " ");
     }
 }

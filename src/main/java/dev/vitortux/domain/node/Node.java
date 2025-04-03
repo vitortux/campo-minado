@@ -1,5 +1,8 @@
 package dev.vitortux.domain.node;
 
+import dev.vitortux.domain.node.state.Closed;
+import dev.vitortux.domain.node.state.NodeState;
+
 public class Node {
     private NodeState state;
     private int minesAround;
