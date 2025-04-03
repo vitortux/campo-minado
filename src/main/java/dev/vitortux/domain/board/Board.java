@@ -2,13 +2,17 @@ package dev.vitortux.domain.board;
 
 import java.util.Random;
 
+import dev.vitortux.domain.node.Bomb;
+import dev.vitortux.domain.node.Node;
+import dev.vitortux.domain.node.NodeStrategy;
+
 public class Board {
-    private Node[][] nodes;
+    private NodeStrategy[][] nodes;
     private Random random;
     private int mines;
 
     public Board(int width, int height, int mines) {
-        this.nodes = new Node[width][height];
+        this.nodes = new NodeStrategy[width][height];
         this.random = new Random();
         this.mines = mines;
         this.init();
@@ -18,7 +22,7 @@ public class Board {
         for (int i = 0; i < nodes.length * nodes[0].length; i++) {
             int row = i / nodes[0].length;
             int col = i % nodes[0].length;
-            nodes[row][col] = new Node(NodeType.EMPTY);
+            nodes[row][col] = new Node();
         }
     }
 
@@ -29,8 +33,8 @@ public class Board {
             int row = random.nextInt(nodes.length);
             int col = random.nextInt(nodes[0].length);
 
-            if (!(Math.abs(y - row) <= 1 && Math.abs(x - col) <= 1) && (nodes[x][y].getType() != NodeType.BOMB)) {
-                nodes[row][col].setType(NodeType.BOMB);
+            if (!(Math.abs(y - row) <= 1 && Math.abs(x - col) <= 1) && !(nodes[x][y] instanceof Bomb)) {
+                nodes[row][col] = new Bomb();
                 placed++;
             }
         }
@@ -58,7 +62,7 @@ public class Board {
             int nextX = row + xOffset;
             int nextY = col + yOffset;
 
-            if (isValidPosition(nextX, nextY) && nodes[nextX][nextY].getType() == NodeType.BOMB) {
+            if (isValidPosition(nextX, nextY) && nodes[nextX][nextY] instanceof Bomb) {
                 count++;
             }
         }
@@ -67,9 +71,9 @@ public class Board {
     }
 
     public void reveal(int x, int y) {
-        if (nodes[x][y].isRevealed()) {
-            return;
-        }
+        // if (nodes[x][y].isRevealed()) {
+        // return;
+        // }
 
         nodes[x][y].reveal();
 
@@ -112,7 +116,7 @@ public class Board {
                 System.out.printf("%2c ", (char) ('A' + row));
             }
 
-            nodes[row][col].print();
+            nodes[row][col].print(nodes[row][col]);
 
             if (col == nodes[0].length - 1) {
                 System.out.println();
