@@ -4,6 +4,7 @@ import java.util.Random;
 
 import dev.vitortux.domain.node.Mine;
 import dev.vitortux.domain.node.Node;
+import dev.vitortux.domain.node.state.Flagged;
 import dev.vitortux.domain.node.state.Revealed;
 
 public class Board {
@@ -27,6 +28,10 @@ public class Board {
     }
 
     public void placeMines(int x, int y) {
+        if (!isValidPosition(x, y)) {
+            return;
+        }
+
         int placed = 0;
 
         while (placed < mines) {
@@ -71,11 +76,17 @@ public class Board {
     }
 
     public void reveal(int x, int y) {
-        if (nodes[x][y].getState() instanceof Revealed) {
+        if (!isValidPosition(x, y)) {
             return;
         }
 
-        nodes[x][y].reveal();
+        Node node = nodes[x][y];
+
+        if (node.getState() instanceof Flagged || node.getState() instanceof Revealed) {
+            return;
+        }
+
+        node.reveal();
 
         if (nodes[x][y].getMinesAround() > 0) {
             return;
@@ -95,6 +106,20 @@ public class Board {
             if (isValidPosition(nextX, nextY)) {
                 reveal(nextX, nextY);
             }
+        }
+    }
+
+    public void flag(int x, int y) {
+        if (!isValidPosition(x, y)) {
+            return;
+        }
+
+        Node node = nodes[x][y];
+
+        if (node.getState() instanceof Flagged) {
+            node.unflag();
+        } else {
+            node.flag();
         }
     }
 
@@ -124,7 +149,7 @@ public class Board {
         }
     }
 
-    private boolean isValidPosition(int x, int y) {
+    public boolean isValidPosition(int x, int y) {
         return x >= 0 && x < nodes.length && y >= 0 && y < nodes[0].length;
     }
 }
