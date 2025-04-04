@@ -1,15 +1,10 @@
 package dev.vitortux;
 
-import dev.vitortux.domain.board.Board;
-import dev.vitortux.domain.board.BoardFactory;
+import dev.vitortux.domain.game.Game;
 
 public class Main {
     public static void main(String[] args) {
-        Board board = BoardFactory.MEDIUM.get();
-        board.placeMines(5, 5);
-        board.setupNodes();
-        board.print();
-        board.reveal(5, 5);
-        board.print();
+        Game game = Game.getInstance();
+        game.run();
     }
 }

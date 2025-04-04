@@ -16,6 +16,9 @@ public class Input {
         Matcher matcher;
         String input;
 
+        System.out.println("\tDigite \"play [dificuldade]\" para jogar e \"exit\" para sair.\n");
+        System.out.println("\t\tExemplo: play medium");
+
         do {
             System.out.print("\n> ");
             input = SCANNER.nextLine();
@@ -30,7 +33,7 @@ public class Input {
         return BoardFactory.valueOf(difficulty.toUpperCase()).get();
     }
 
-    public void process(Board board) {
+    public UserCommand readCommand() {
         String input;
         Matcher matcher;
 
@@ -45,9 +48,9 @@ public class Input {
         } while (!matcher.matches());
 
         String command = matcher.group(1);
-        int row = Integer.parseInt(matcher.group(2));
         int col = matcher.group(3).toLowerCase().charAt(0) - 'a';
+        int row = Integer.parseInt(matcher.group(2)) - 1;
 
-        InputType.valueOf(command.toUpperCase()).execute(board, row, col);
+        return new UserCommand(InputType.valueOf(command.toUpperCase()), col, row);
     }
 }
