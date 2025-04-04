@@ -12,8 +12,7 @@ public class FirstMove implements GameState {
 
         UserCommand command = game.readCommand();
 
-        if (command.getType() != InputType.REVEAL ||
-                !game.getBoard().isValidPosition(command.getCol(), command.getRow())) {
+        if (command.getType() != InputType.REVEAL) {
             return;
         }
 

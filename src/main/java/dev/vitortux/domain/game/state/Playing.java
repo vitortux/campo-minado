@@ -8,13 +8,7 @@ public class Playing implements GameState {
     @Override
     public void run(Game game) {
         game.printBoard();
-
         UserCommand command = game.readCommand();
-
-        if (!game.getBoard().isValidPosition(command.getCol(), command.getRow())) {
-            return;
-        }
-
         command.getType().execute(game.getBoard(), command.getCol(), command.getRow());
     }
 }

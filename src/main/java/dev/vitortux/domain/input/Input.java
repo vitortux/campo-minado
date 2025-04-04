@@ -13,44 +13,43 @@ public class Input {
     private static final Pattern COMMAND_PATTERN = Pattern.compile("^(reveal|flag) (\\d+)([a-zA-Z])$");
 
     public Board selectDifficulty() {
-        Matcher matcher;
-        String input;
-
         System.out.println("\tDigite \"play [dificuldade]\" para jogar e \"exit\" para sair.\n");
         System.out.println("\t\tExemplo: play medium");
 
-        do {
+        String input;
+        while (true) {
             System.out.print("\n> ");
             input = SCANNER.nextLine();
-            matcher = PLAY_PATTERN.matcher(input);
+            Matcher matcher = PLAY_PATTERN.matcher(input);
 
-            if (!matcher.matches()) {
-                System.out.println("Entrada inválida! Use: play easy, play medium ou play hard.");
+            if (matcher.matches()) {
+                String difficulty = matcher.group(1).toUpperCase();
+                return BoardFactory.valueOf(difficulty).get();
             }
-        } while (!matcher.matches());
 
-        String difficulty = matcher.group(1).toUpperCase();
-        return BoardFactory.valueOf(difficulty.toUpperCase()).get();
+            System.out.println("Entrada inválida! Use: play easy, play medium ou play hard.");
+        }
     }
 
-    public UserCommand readCommand() {
-        String input;
-        Matcher matcher;
-
-        do {
+    public UserCommand readCommand(Board board) {
+        while (true) {
             System.out.print("\n> ");
-            input = SCANNER.nextLine();
-            matcher = COMMAND_PATTERN.matcher(input);
+            String input = SCANNER.nextLine();
+            Matcher matcher = COMMAND_PATTERN.matcher(input);
 
-            if (!matcher.matches()) {
+            if (matcher.matches()) {
+                int col = matcher.group(3).toLowerCase().charAt(0) - 'a';
+                int row = Integer.parseInt(matcher.group(2)) - 1;
+
+                if (board.isValidPosition(row, col)) {
+                    String command = matcher.group(1);
+                    return new UserCommand(InputType.valueOf(command.toUpperCase()), col, row);
+                }
+
+                System.out.println("Coordenadas inválidas! Tente novamente.");
+            } else {
                 System.out.println("Entrada inválida! Use: reveal [linha][coluna] ou flag [linha][coluna].");
             }
-        } while (!matcher.matches());
-
-        String command = matcher.group(1);
-        int col = matcher.group(3).toLowerCase().charAt(0) - 'a';
-        int row = Integer.parseInt(matcher.group(2)) - 1;
-
-        return new UserCommand(InputType.valueOf(command.toUpperCase()), col, row);
+        }
     }
 }

@@ -47,7 +47,7 @@ public class Game {
     }
 
     public UserCommand readCommand() {
-        return this.input.readCommand();
+        return this.input.readCommand(this.board);
     }
 
     public Board getBoard() {
