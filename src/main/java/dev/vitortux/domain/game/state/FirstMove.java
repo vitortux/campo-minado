@@ -8,6 +8,7 @@ public class FirstMove implements GameState {
 
     @Override
     public void run(Game game) {
+        game.getSoundtrack().play("running.wav", true);
         game.printBoard();
 
         UserCommand command = game.readCommand();

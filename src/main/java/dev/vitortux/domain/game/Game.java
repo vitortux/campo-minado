@@ -1,5 +1,6 @@
 package dev.vitortux.domain.game;
 
+import dev.vitortux.domain.audio.Soundtrack;
 import dev.vitortux.domain.board.Board;
 import dev.vitortux.domain.game.state.DifficultySelection;
 import dev.vitortux.domain.game.state.GameState;
@@ -11,11 +12,13 @@ public class Game {
     private Board board;
     private Input input;
     private GameState state;
+    private Soundtrack soundtrack;
     private boolean running;
 
     private Game() {
         this.input = new Input();
         this.state = new DifficultySelection();
+        this.soundtrack = new Soundtrack();
         this.running = true;
     }
 
@@ -60,5 +63,9 @@ public class Game {
 
     public void setState(GameState state) {
         this.state = state;
+    }
+
+    public Soundtrack getSoundtrack() {
+        return soundtrack;
     }
 }
