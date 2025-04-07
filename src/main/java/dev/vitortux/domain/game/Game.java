@@ -17,9 +17,9 @@ public class Game {
 
     private Game() {
         this.input = new Input();
-        this.state = new DifficultySelection();
         this.soundtrack = new Soundtrack();
         this.running = true;
+        this.setState(new DifficultySelection());
     }
 
     public static Game getInstance() {
@@ -63,6 +63,7 @@ public class Game {
 
     public void setState(GameState state) {
         this.state = state;
+        state.onEnter(this);
     }
 
     public Soundtrack getSoundtrack() {

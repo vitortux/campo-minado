@@ -7,8 +7,12 @@ import dev.vitortux.domain.input.UserCommand;
 public class FirstMove implements GameState {
 
     @Override
-    public void run(Game game) {
+    public void onEnter(Game game) {
         game.getSoundtrack().play("running.wav", true);
+    }
+
+    @Override
+    public void run(Game game) {
         game.printBoard();
 
         UserCommand command = game.readCommand();

@@ -41,7 +41,7 @@ public class Input {
                 int col = matcher.group(3).toLowerCase().charAt(0) - 'a';
                 int row = Integer.parseInt(matcher.group(2)) - 1;
 
-                if (board.isValidPosition(row, col)) {
+                if (board.isValidPosition(col, row)) {
                     String command = matcher.group(1);
                     return new UserCommand(InputType.valueOf(command.toUpperCase()), col, row);
                 }

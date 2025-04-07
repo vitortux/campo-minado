@@ -4,4 +4,7 @@ import dev.vitortux.domain.game.Game;
 
 public interface GameState {
     void run(Game game);
+
+    default void onEnter(Game game) {
+    }
 }

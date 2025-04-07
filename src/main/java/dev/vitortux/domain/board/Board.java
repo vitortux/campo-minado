@@ -11,11 +11,13 @@ public class Board {
     private Node[][] nodes;
     private Random random;
     private int mines;
+    private int revealed;
 
     public Board(int width, int height, int mines) {
         this.nodes = new Node[width][height];
         this.random = new Random();
         this.mines = mines;
+        this.revealed = 0;
         this.init();
     }
 
@@ -87,6 +89,7 @@ public class Board {
         }
 
         node.reveal();
+        revealed++;
 
         if (nodes[x][y].getMinesAround() > 0) {
             return;
@@ -152,4 +155,9 @@ public class Board {
     public boolean isValidPosition(int x, int y) {
         return x >= 0 && x < nodes.length && y >= 0 && y < nodes[0].length;
     }
+
+    public boolean isCleared() {
+        return revealed == (nodes.length * nodes[0].length - mines);
+    }
+
 }
