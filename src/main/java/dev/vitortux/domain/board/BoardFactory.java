@@ -1,5 +1,8 @@
 package dev.vitortux.domain.board;
 
+import lombok.Getter;
+
+@Getter
 public enum BoardFactory {
     EASY(10, 8, 10),
     MEDIUM(18, 14, 40),

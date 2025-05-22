@@ -1,14 +1,18 @@
 package dev.vitortux.domain.node;
 
-import dev.vitortux.domain.node.state.Closed;
-import dev.vitortux.domain.node.state.NodeState;
+import dev.vitortux.domain.node.state.ClosedNodeState;
+import dev.vitortux.domain.node.state.INodeState;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class Node {
-    private NodeState state;
-    private int minesAround;
+    private INodeState state;
+    private int mines;
 
     public Node() {
-        this.state = new Closed();
+        this.state = new ClosedNodeState();
     }
 
     public void reveal() {
@@ -24,22 +28,6 @@ public class Node {
     }
 
     public void print() {
-        this.state.print(minesAround);
-    }
-
-    public NodeState getState() {
-        return state;
-    }
-
-    public void setState(NodeState state) {
-        this.state = state;
-    }
-
-    public int getMinesAround() {
-        return minesAround;
-    }
-
-    public void setMinesAround(int minesAround) {
-        this.minesAround = minesAround;
+        this.state.print(mines);
     }
 }

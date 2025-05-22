@@ -1,25 +1,26 @@
 package dev.vitortux.domain.game;
 
+import java.util.Scanner;
+
 import dev.vitortux.domain.audio.Soundtrack;
 import dev.vitortux.domain.board.Board;
-import dev.vitortux.domain.game.state.DifficultySelection;
-import dev.vitortux.domain.game.state.GameState;
-import dev.vitortux.domain.input.Input;
-import dev.vitortux.domain.input.UserCommand;
+import dev.vitortux.domain.game.state.DifficultySelectionState;
+import dev.vitortux.domain.game.state.IGameState;
+import lombok.Getter;
 
+@Getter
 public class Game {
     private static Game instance;
     private Board board;
-    private Input input;
-    private GameState state;
+    private IGameState state;
     private Soundtrack soundtrack;
     private boolean running;
+    private final Scanner scanner = new Scanner(System.in);
 
     private Game() {
-        this.input = new Input();
         this.soundtrack = new Soundtrack();
         this.running = true;
-        this.setState(new DifficultySelection());
+        this.setState(new DifficultySelectionState(this));
     }
 
     public static Game getInstance() {
@@ -29,44 +30,23 @@ public class Game {
         return instance;
     }
 
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
+    public void setState(IGameState state) {
+        this.state = state;
+        this.state.playMusic();
+    }
+
     public void run() {
         while (running) {
-            state.run(this);
+            state.run();
         }
     }
 
-    public void selectDifficulty() {
-        this.board = input.selectDifficulty();
-    }
-
-    public void printBoard() {
-        this.board.print();
-    }
-
-    public void firstMove(int x, int y) {
-        this.board.placeMines(x, y);
-        this.board.setupNodes();
-        this.board.reveal(x, y);
-    }
-
-    public UserCommand readCommand() {
-        return this.input.readCommand(this.board);
-    }
-
-    public Board getBoard() {
-        return this.board;
-    }
-
-    public GameState getState() {
-        return state;
-    }
-
-    public void setState(GameState state) {
-        this.state = state;
-        state.onEnter(this);
-    }
-
-    public Soundtrack getSoundtrack() {
-        return soundtrack;
+    public static void main(String[] args) {
+        Game game = Game.getInstance();
+        game.run();
     }
 }

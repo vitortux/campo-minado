@@ -4,8 +4,8 @@ import java.util.Random;
 
 import dev.vitortux.domain.node.Mine;
 import dev.vitortux.domain.node.Node;
-import dev.vitortux.domain.node.state.Flagged;
-import dev.vitortux.domain.node.state.Revealed;
+import dev.vitortux.domain.node.state.FlaggedNodeState;
+import dev.vitortux.domain.node.state.RevealedNodeState;
 
 public class Board {
     private Node[][] nodes;
@@ -51,7 +51,7 @@ public class Board {
         for (int i = 0; i < nodes.length * nodes[0].length; i++) {
             int row = i / nodes[0].length;
             int col = i % nodes[0].length;
-            nodes[row][col].setMinesAround(countMinesAroundNode(row, col));
+            nodes[row][col].setMines(countMinesAroundNode(row, col));
         }
     }
 
@@ -84,14 +84,14 @@ public class Board {
 
         Node node = nodes[x][y];
 
-        if (node.getState() instanceof Flagged || node.getState() instanceof Revealed) {
+        if (node.getState() instanceof FlaggedNodeState || node.getState() instanceof RevealedNodeState) {
             return;
         }
 
         node.reveal();
         revealed++;
 
-        if (nodes[x][y].getMinesAround() > 0) {
+        if (nodes[x][y].getMines() > 0) {
             return;
         }
 
@@ -119,7 +119,7 @@ public class Board {
 
         Node node = nodes[x][y];
 
-        if (node.getState() instanceof Flagged) {
+        if (node.getState() instanceof FlaggedNodeState) {
             node.unflag();
         } else {
             node.flag();
@@ -127,9 +127,6 @@ public class Board {
     }
 
     public void print() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-
         System.out.print("   ");
         for (int col = 0; col < nodes.length; col++) {
             System.out.printf("%2c ", (char) ('A' + col));
@@ -160,4 +157,40 @@ public class Board {
         return revealed == (nodes.length * nodes[0].length - mines);
     }
 
+    public static class BoardBuilder {
+        private int width;
+        private int height;
+        private int mines;
+        private int firstMoveX;
+        private int firstMoveY;
+
+        public BoardBuilder setWidth(int width) {
+            this.width = width;
+            return this;
+        }
+
+        public BoardBuilder setHeight(int height) {
+            this.height = height;
+            return this;
+        }
+
+        public BoardBuilder setMines(int mines) {
+            this.mines = mines;
+            return this;
+        }
+
+        public BoardBuilder setFirstMove(int x, int y) {
+            this.firstMoveX = x;
+            this.firstMoveY = y;
+            return this;
+        }
+
+        public Board build() {
+            Board board = new Board(width, height, mines);
+            board.placeMines(firstMoveX, firstMoveY);
+            board.setupNodes();
+            board.reveal(firstMoveX, firstMoveY);
+            return board;
+        }
+    }
 }
