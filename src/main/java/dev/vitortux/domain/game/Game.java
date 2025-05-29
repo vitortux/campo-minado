@@ -14,11 +14,13 @@ public class Game {
     private Board board;
     private IGameState state;
     private Soundtrack soundtrack;
+    private ResourceLoader resources;
     private boolean running;
     private final Scanner scanner = new Scanner(System.in);
 
     private Game() {
         this.soundtrack = new Soundtrack();
+        this.resources = new ResourceLoader();
         this.running = true;
         this.setState(new DifficultySelectionState(this));
     }
@@ -36,7 +38,7 @@ public class Game {
 
     public void setState(IGameState state) {
         this.state = state;
-        this.state.playMusic();
+        this.state.music();
     }
 
     public void run() {

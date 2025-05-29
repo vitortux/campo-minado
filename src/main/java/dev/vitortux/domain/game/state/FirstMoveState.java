@@ -19,15 +19,10 @@ public class FirstMoveState implements IGameState {
     }
 
     @Override
-    public void playMusic() {
-        game.getSoundtrack().play("running.wav", true);
-    }
-
-    @Override
     public void run() {
         this.clear();
 
-        this.printEmptyBoard(factory.getWidth(), factory.getHeight());
+        this.printEmptyBoard();
 
         String input;
         Matcher matcher;
@@ -64,16 +59,21 @@ public class FirstMoveState implements IGameState {
         } while (!valid);
     }
 
-    private void printEmptyBoard(int width, int height) {
+    @Override
+    public void music() {
+        game.getSoundtrack().play("running.wav", true);
+    }
+
+    private void printEmptyBoard() {
         System.out.print("   ");
-        for (int col = 0; col < width; col++) {
+        for (int col = 0; col < factory.getWidth(); col++) {
             System.out.printf("%2c ", (char) ('A' + col));
         }
         System.out.println();
 
-        for (int row = 0; row < height; row++) {
+        for (int row = 0; row < factory.getHeight(); row++) {
             System.out.printf("%2d ", row + 1);
-            for (int col = 0; col < width; col++) {
+            for (int col = 0; col < factory.getWidth(); col++) {
                 System.out.print("🌳 ");
             }
             System.out.println();

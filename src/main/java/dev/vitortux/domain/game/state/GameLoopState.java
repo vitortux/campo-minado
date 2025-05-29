@@ -17,10 +17,6 @@ public class GameLoopState implements IGameState {
     }
 
     @Override
-    public void playMusic() {
-    }
-
-    @Override
     public void run() {
         this.clear();
 
@@ -32,7 +28,6 @@ public class GameLoopState implements IGameState {
             command.input().execute(game.getBoard(), command.col(), command.row());
 
             if (game.getBoard().isCleared()) {
-                System.out.println("🎉 Você venceu!");
                 game.setState(new GameWinningState(game));
             }
         } catch (GameException e) {
@@ -67,5 +62,9 @@ public class GameLoopState implements IGameState {
         } while (!valid);
 
         return command;
+    }
+
+    @Override
+    public void music() {
     }
 }

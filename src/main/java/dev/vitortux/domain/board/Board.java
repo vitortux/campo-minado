@@ -18,63 +18,12 @@ public class Board {
         this.random = new Random();
         this.mines = mines;
         this.revealed = 0;
+    }
+
+    public void initialize(int firstMoveX, int firstMoveY) {
         this.init();
-    }
-
-    private void init() {
-        for (int i = 0; i < nodes.length * nodes[0].length; i++) {
-            int row = i / nodes[0].length;
-            int col = i % nodes[0].length;
-            nodes[row][col] = new Node();
-        }
-    }
-
-    public void placeMines(int x, int y) {
-        if (!isValidPosition(x, y)) {
-            return;
-        }
-
-        int placed = 0;
-
-        while (placed < mines) {
-            int row = random.nextInt(nodes.length);
-            int col = random.nextInt(nodes[0].length);
-
-            if (!(Math.abs(y - row) <= 1 && Math.abs(x - col) <= 1) && !(nodes[x][y] instanceof Mine)) {
-                nodes[row][col] = new Mine();
-                placed++;
-            }
-        }
-    }
-
-    public void setupNodes() {
-        for (int i = 0; i < nodes.length * nodes[0].length; i++) {
-            int row = i / nodes[0].length;
-            int col = i % nodes[0].length;
-            nodes[row][col].setMines(countMinesAroundNode(row, col));
-        }
-    }
-
-    private int countMinesAroundNode(int row, int col) {
-        int count = 0;
-
-        for (int i = 0; i < 9; i++) {
-            int xOffset = i / 3 - 1;
-            int yOffset = i % 3 - 1;
-
-            if (xOffset == 0 && yOffset == 0) {
-                continue;
-            }
-
-            int nextX = row + xOffset;
-            int nextY = col + yOffset;
-
-            if (isValidPosition(nextX, nextY) && nodes[nextX][nextY] instanceof Mine) {
-                count++;
-            }
-        }
-
-        return count;
+        this.placeMines(firstMoveX, firstMoveY);
+        this.setupNodes();
     }
 
     public void reveal(int x, int y) {
@@ -157,6 +106,62 @@ public class Board {
         return revealed == (nodes.length * nodes[0].length - mines);
     }
 
+    private void init() {
+        for (int i = 0; i < nodes.length * nodes[0].length; i++) {
+            int row = i / nodes[0].length;
+            int col = i % nodes[0].length;
+            nodes[row][col] = new Node();
+        }
+    }
+
+    private void placeMines(int x, int y) {
+        if (!isValidPosition(x, y)) {
+            return;
+        }
+
+        int placed = 0;
+
+        while (placed < mines) {
+            int row = random.nextInt(nodes.length);
+            int col = random.nextInt(nodes[0].length);
+
+            if (!(Math.abs(y - row) <= 1 && Math.abs(x - col) <= 1) && !(nodes[x][y] instanceof Mine)) {
+                nodes[row][col] = new Mine();
+                placed++;
+            }
+        }
+    }
+
+    private void setupNodes() {
+        for (int i = 0; i < nodes.length * nodes[0].length; i++) {
+            int row = i / nodes[0].length;
+            int col = i % nodes[0].length;
+            nodes[row][col].setMines(countMinesAroundNode(row, col));
+        }
+    }
+
+    private int countMinesAroundNode(int row, int col) {
+        int count = 0;
+
+        for (int i = 0; i < 9; i++) {
+            int xOffset = i / 3 - 1;
+            int yOffset = i % 3 - 1;
+
+            if (xOffset == 0 && yOffset == 0) {
+                continue;
+            }
+
+            int nextX = row + xOffset;
+            int nextY = col + yOffset;
+
+            if (isValidPosition(nextX, nextY) && nodes[nextX][nextY] instanceof Mine) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
     public static class BoardBuilder {
         private int width;
         private int height;
@@ -187,8 +192,7 @@ public class Board {
 
         public Board build() {
             Board board = new Board(width, height, mines);
-            board.placeMines(firstMoveX, firstMoveY);
-            board.setupNodes();
+            board.initialize(firstMoveX, firstMoveY);
             board.reveal(firstMoveX, firstMoveY);
             return board;
         }

@@ -7,7 +7,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 public class Soundtrack {
-    private static final String SOUNDTRACK_PATH = "src/main/java/resources/audio/music/";
+    private static final String SOUNDTRACK_PATH = "src/main/resources/audio/music/";
     private Clip playingNow = null;
 
     public void play(String sound) {
